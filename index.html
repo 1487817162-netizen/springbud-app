@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="春蕾工作台">
+<link rel="apple-touch-icon" href="generated-images/kt_app_icon.png">
+<title>宋春蕾工作台</title>
+<link rel="stylesheet" href="styles.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="app-container">
+    <!-- 左侧导航栏 -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="avatar kt-avatar">
+                <img src="generated-images/A_cute_chibi_Hello_Kitty_chara_2026-07-29T10-42-14.png" alt="Hello Kitty" class="kt-avatar-img">
+            </div>
+            <div class="user-info">
+                <h3>宋春蕾</h3>
+                <p>🎀 每天进步一点点</p>
+            </div>
+        </div>
+        <div class="sidebar-main-title">
+            <span class="title-icon">🌸</span>
+            <span class="title-text">我的工作台</span>
+            <span class="title-icon">🌸</span>
+        </div>
+        <div class="nav-title">
+            <i class="fas fa-heart"></i>
+            <span>功能导航</span>
+            <i class="fas fa-heart"></i>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" data-page="home">
+                <span class="nav-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-48-41.png" alt="首页"></span>
+                <span>首页</span>
+            </li>
+            <li class="nav-item" data-page="finance">
+                <span class="nav-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-48-42.png" alt="财务"></span>
+                <span>财务管理</span>
+            </li>
+            <li class="nav-item" data-page="weight">
+                <span class="nav-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-09.png" alt="体重"></span>
+                <span>体重管理</span>
+            </li>
+            <li class="nav-item" data-page="exercise">
+                <span class="nav-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-10.png" alt="运动"></span>
+                <span>运动健身</span>
+            </li>
+            <li class="nav-item" data-page="todo">
+                <span class="nav-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-36.png" alt="待办"></span>
+                <span>待办事项</span>
+                <span class="badge" id="todo-badge">0</span>
+            </li>
+            <li class="nav-item" data-page="diary">
+                <span class="nav-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-38.png" alt="日记"></span>
+                <span>每日日记</span>
+            </li>
+            <li class="nav-item" data-page="work">
+                <span class="nav-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-50-20.png" alt="工作"></span>
+                <span>工作板块</span>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <p><i class="fas fa-calendar-alt"></i> <span id="current-date"></span></p>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+        <!-- 首页 -->
+        <section id="home" class="page active">
+            <!-- 时间问候 -->
+            <div class="home-greeting">
+                <p class="greeting-text" id="greeting-text">下午好，宋春蕾~</p>
+                <h1 class="greeting-time" id="greeting-time">17:55</h1>
+                <p class="greeting-date" id="greeting-date">2026年7月29日 星期三</p>
+                <div class="kt-deco-top">🎀</div>
+            </div>
+
+            <!-- 语录卡片 -->
+            <div class="quote-card">
+                <span class="quote-deco-left">🌸</span>
+                <p class="quote-text">种一棵树最好的时间是十年前，其次是现在。</p>
+                <p class="quote-en">The best time to plant a tree was ten years ago. The second best time is now.</p>
+                <span class="quote-deco-right">🌸</span>
+            </div>
+
+            <!-- 每日打卡 -->
+            <h2 class="section-title"><span class="dot"></span>每日打卡</h2>
+            <div class="checkin-grid" id="checkin-grid">
+                <!-- 动态生成 -->
+            </div>
+
+            <!-- 今日概览 -->
+            <h2 class="section-title"><span class="dot"></span>今日概览</h2>
+            <div class="overview-grid">
+                <div class="overview-card" onclick="navigateTo('todo')">
+                    <span class="overview-icon">✅</span>
+                    <span class="overview-label">待办</span>
+                    <span class="overview-value" id="overview-todo">0</span>
+                </div>
+                <div class="overview-card" onclick="navigateTo('weight')">
+                    <span class="overview-icon">🍱</span>
+                    <span class="overview-label">饮食</span>
+                    <span class="overview-value" id="overview-diet">--</span>
+                </div>
+                <div class="overview-card" onclick="navigateTo('exercise')">
+                    <span class="overview-icon">🏃</span>
+                    <span class="overview-label">运动</span>
+                    <span class="overview-value" id="overview-exercise">未打卡</span>
+                </div>
+                <div class="overview-card" onclick="navigateTo('weight')">
+                    <span class="overview-icon">⚖️</span>
+                    <span class="overview-label">体重</span>
+                    <span class="overview-value" id="overview-weight">--</span>
+                </div>
+                <div class="overview-card" onclick="navigateTo('diary')">
+                    <span class="overview-icon">📖</span>
+                    <span class="overview-label">日记</span>
+                    <span class="overview-value" id="overview-diary">未写</span>
+                </div>
+                <div class="overview-card" onclick="navigateTo('finance')">
+                    <span class="overview-icon">💰</span>
+                    <span class="overview-label">记账</span>
+                    <span class="overview-value" id="overview-finance">--</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 财务管理 -->
+        <section id="finance" class="page">
+            <h2 class="page-title"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-48-42.png" class="page-title-icon" alt="财务"> 财务管理</h2>
+            <div class="finance-container">
+                <div class="finance-cards">
+                    <div class="finance-card income">
+                        <img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-57-49.png" class="card-kt-icon" alt="收入">
+                        <div>
+                            <p>本月收入</p>
+                            <h3 id="total-income">¥0</h3>
+                        </div>
+                    </div>
+                    <div class="finance-card expense">
+                        <img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-57-51.png" class="card-kt-icon" alt="支出">
+                        <div>
+                            <p>本月支出</p>
+                            <h3 id="total-expense">¥0</h3>
+                        </div>
+                    </div>
+                    <div class="finance-card balance">
+                        <img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-57-52.png" class="card-kt-icon" alt="结余">
+                        <div>
+                            <p>本月结余</p>
+                            <h3 id="total-balance">¥0</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="finance-sections">
+                    <div class="finance-left">
+                        <h3><img src="generated-images/kt_accounting.png" class="section-kt-icon" alt="记账"> 记账</h3>
+                        <div class="record-form">
+                            <div class="form-row">
+                                <select id="record-type">
+                                    <option value="expense">支出</option>
+                                    <option value="income">收入</option>
+                                </select>
+                                <input type="number" id="record-amount" placeholder="金额">
+                                <select id="record-category">
+                                    <option value="餐饮">餐饮</option>
+                                    <option value="交通">交通</option>
+                                    <option value="购物">购物</option>
+                                    <option value="娱乐">娱乐</option>
+                                    <option value="房租">房租</option>
+                                    <option value="医疗">医疗</option>
+                                    <option value="教育">教育</option>
+                                    <option value="其他">其他</option>
+                                </select>
+                            </div>
+                            <input type="text" id="record-note" placeholder="备注">
+                            <button onclick="addRecord()" class="btn-primary">➕ 添加记录</button>
+                        </div>
+                        <div class="record-list" id="record-list">
+                            <!-- 记录列表 -->
+                        </div>
+                    </div>
+
+                    <div class="finance-right">
+                        <h3><img src="generated-images/kt_savings.png" class="section-kt-icon" alt="储蓄"> 储蓄目标</h3>
+                        <div class="savings-form">
+                            <input type="text" id="savings-name" placeholder="目标名称（如：旅行基金）">
+                            <input type="number" id="savings-target" placeholder="目标金额">
+                            <input type="number" id="savings-current" placeholder="当前已存">
+                            <button onclick="addSavings()" class="btn-primary">➕ 添加储蓄目标</button>
+                        </div>
+                        <div class="savings-list" id="savings-list">
+                            <!-- 储蓄目标列表 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 体重管理 -->
+        <section id="weight" class="page">
+            <h2 class="page-title"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-09.png" class="page-title-icon" alt="体重"> 体重管理</h2>
+            <div class="weight-container">
+                <!-- 1. 拍照分析热量 -->
+                <div class="diet-photo-section">
+                    <h3>📷 拍照分析热量</h3>
+                    <div class="photo-upload">
+                        <input type="file" id="food-photo" accept="image/*" style="display:none">
+                        <div class="upload-area" onclick="document.getElementById('food-photo').click()">
+                            <span style="font-size:36px;">📸</span>
+                            <p>点击上传食物照片</p>
+                            <p class="upload-hint">AI将分析食物并估算热量</p>
+                        </div>
+                    </div>
+                    <div class="photo-analysis" id="photo-analysis"></div>
+                </div>
+
+                <!-- 2. 记录今日 -->
+                <div class="weight-input-area weight-card">
+                    <h3>📝 记录今日</h3>
+                    <div class="weight-form">
+                        <input type="number" id="today-weight" placeholder="今日体重 (kg)" step="0.1">
+                        <input type="number" id="today-calories" placeholder="今日摄入卡路里">
+                        <button onclick="addWeightRecord()" class="btn-primary">➕ 记录</button>
+                    </div>
+                    <div class="weight-stats">
+                        <div class="stat-item">
+                            <p>当前体重</p>
+                            <h3 id="current-weight">--</h3>
+                        </div>
+                        <div class="stat-item">
+                            <p>目标体重</p>
+                            <h3><input type="number" id="target-weight" placeholder="55" style="width:60px;text-align:center;"> kg</h3>
+                        </div>
+                        <div class="stat-item">
+                            <p>还需减重</p>
+                            <h3 id="weight-remaining">--</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 饮食记录 -->
+                <div class="diet-section">
+                    <h3><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-58-50.png" class="section-kt-icon" alt="饮食"> 饮食记录</h3>
+                    <div class="diet-form">
+                        <input type="text" id="diet-name" placeholder="食物名称">
+                        <input type="number" id="diet-calories" placeholder="热量(千卡)">
+                        <select id="diet-meal">
+                            <option value="早餐">早餐</option>
+                            <option value="午餐">午餐</option>
+                            <option value="晚餐">晚餐</option>
+                            <option value="加餐">加餐</option>
+                        </select>
+                        <button onclick="addDiet()" class="btn-primary">➕ 添加</button>
+                    </div>
+                    <div class="diet-list" id="diet-list"></div>
+                </div>
+
+                <!-- 4. 体重趋势 -->
+                <div class="weight-chart-area weight-card">
+                    <h3>📊 体重趋势</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 运动 -->
+        <section id="exercise" class="page">
+            <h2 class="page-title"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-10.png" class="page-title-icon" alt="运动"> 运动健身</h2>
+            <div class="exercise-container">
+                <div class="exercise-categories">
+                    <button class="cat-btn active" data-cat="all">全部</button>
+                    <button class="cat-btn" data-cat="cardio">有氧</button>
+                    <button class="cat-btn" data-cat="strength">力量</button>
+                    <button class="cat-btn" data-cat="stretch">拉伸</button>
+                </div>
+
+                <div class="exercise-search">
+                    <input type="text" id="exercise-search" placeholder="搜索器械或动作..." oninput="searchExercise()">
+                </div>
+
+                <div class="exercise-grid" id="exercise-grid">
+                    <!-- 动态生成 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 待办事项 -->
+        <section id="todo" class="page">
+            <h2 class="page-title"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-36.png" class="page-title-icon" alt="待办"> 待办事项</h2>
+            <div class="todo-container">
+                <div class="todo-input-area">
+                    <input type="text" id="todo-input" placeholder="添加新事项..." onkeypress="if(event.key==='Enter')addTodo()">
+                    <input type="date" id="todo-due" placeholder="截止日期">
+                    <select id="todo-priority">
+                        <option value="low">低优先级</option>
+                        <option value="medium" selected>中优先级</option>
+                        <option value="high">高优先级</option>
+                    </select>
+                    <button onclick="addTodo()" class="btn-primary">➕</button>
+                </div>
+                <div class="todo-filters">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="active">进行中</button>
+                    <button class="filter-btn" data-filter="completed">已完成</button>
+                </div>
+                <div class="todo-list" id="todo-list"></div>
+                <div class="todo-stats">
+                    <p>共 <span id="todo-total">0</span> 项 | 已完成 <span id="todo-completed">0</span> 项</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 每日日记 - 手账风格 -->
+        <section id="diary" class="page">
+            <h2 class="page-title"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-49-38.png" class="page-title-icon" alt="日记"> 每日日记</h2>
+            <div class="diary-container">
+                <div class="diary-input">
+                    <div class="diary-input-row">
+                        <input type="date" id="diary-date">
+                        <div class="weather-picker">
+                            <button class="weather-btn" data-weather="☀️" title="晴天" onclick="pickWeather(this)">☀️</button>
+                            <button class="weather-btn" data-weather="⛅" title="多云" onclick="pickWeather(this)">⛅</button>
+                            <button class="weather-btn" data-weather="☁️" title="阴天" onclick="pickWeather(this)">☁️</button>
+                            <button class="weather-btn" data-weather="🌧️" title="下雨" onclick="pickWeather(this)">🌧️</button>
+                            <button class="weather-btn" data-weather="⛈️" title="暴雨" onclick="pickWeather(this)">⛈️</button>
+                            <button class="weather-btn" data-weather="🌨️" title="下雪" onclick="pickWeather(this)">🌨️</button>
+                        </div>
+                        <div class="mood-picker">
+                            <button class="mood-btn" data-mood="😊" title="开心" onclick="pickMood(this)">😊</button>
+                            <button class="mood-btn" data-mood="🥰" title="幸福" onclick="pickMood(this)">🥰</button>
+                            <button class="mood-btn" data-mood="😌" title="平静" onclick="pickMood(this)">😌</button>
+                            <button class="mood-btn" data-mood="😤" title="生气" onclick="pickMood(this)">😤</button>
+                            <button class="mood-btn" data-mood="😢" title="难过" onclick="pickMood(this)">😢</button>
+                            <button class="mood-btn" data-mood="🤔" title="思考" onclick="pickMood(this)">🤔</button>
+                        </div>
+                    </div>
+                    <div class="diary-tags">
+                        <button class="tag-btn" data-tag="学习" onclick="toggleTag(this)">#学习</button>
+                        <button class="tag-btn" data-tag="工作" onclick="toggleTag(this)">#工作</button>
+                        <button class="tag-btn" data-tag="心情" onclick="toggleTag(this)">#心情</button>
+                        <button class="tag-btn" data-tag="运动" onclick="toggleTag(this)">#运动</button>
+                        <button class="tag-btn" data-tag="美食" onclick="toggleTag(this)">#美食</button>
+                        <button class="tag-btn" data-tag="阅读" onclick="toggleTag(this)">#阅读</button>
+                        <button class="tag-btn" data-tag="感悟" onclick="toggleTag(this)">#感悟</button>
+                        <button class="tag-btn" data-tag="旅行" onclick="toggleTag(this)">#旅行</button>
+                        <button class="tag-btn" data-tag="健康" onclick="toggleTag(this)">#健康</button>
+                        <button class="tag-btn" data-tag="感恩" onclick="toggleTag(this)">#感恩</button>
+                    </div>
+                    <textarea id="diary-content" placeholder="今天发生了什么有趣的事？有什么新的感悟？写下你的想法吧..."></textarea>
+                    <div class="diary-photos">
+                        <input type="file" id="diary-photos" accept="image/*" multiple style="display:none">
+                        <div class="photo-upload-btn" onclick="document.getElementById('diary-photos').click()">
+                            <i class="fas fa-camera"></i> 添加照片
+                        </div>
+                        <div class="photo-preview" id="photo-preview"></div>
+                    </div>
+                    <button onclick="saveDiary()" class="btn-primary">✨ 保存日记</button>
+                </div>
+                <div class="diary-entries" id="diary-entries">
+                    <!-- 日记列表 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 工作板块 -->
+        <section id="work" class="page">
+            <h2 class="page-title"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-50-20.png" class="page-title-icon" alt="工作"> 工作板块</h2>
+            <div class="work-container">
+                <div class="work-header">
+                    <p>🎀 齿轮行业 · 质量工程师</p>
+                </div>
+                <div class="work-grid">
+                    <div class="work-card" onclick="showQA('gear')">
+                        <div class="work-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-58-19.png" alt="齿轮"></div>
+                        <h4>齿轮专业知识问答</h4>
+                        <p>齿轮精度、检测方法、材料热处理等专业知识</p>
+                    </div>
+                    <div class="work-card" onclick="showQA('tools')">
+                        <div class="work-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-58-20.png" alt="工具"></div>
+                        <h4>质量工具手法</h4>
+                        <p>七大手法、SPC、FMEA、MSA等质量管理工具</p>
+                    </div>
+                    <div class="work-card" onclick="showQA('office')">
+                        <div class="work-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-58-22.png" alt="Office"></div>
+                        <h4>Office快捷问答</h4>
+                        <p>Excel、Word、PPT常用操作与快捷键</p>
+                    </div>
+                    <div class="work-card" onclick="showQA('standards')">
+                        <div class="work-icon"><img src="generated-images/A_cute_kawaii_chibi_Hello_Kitt_2026-07-29T10-58-49.png" alt="标准"></div>
+                        <h4>标准与规范</h4>
+                        <p>GB、ISO、AGMA等齿轮相关标准查询</p>
+                    </div>
+                </div>
+
+                <div class="qa-panel" id="qa-panel" style="display:none;">
+                    <div class="qa-header">
+                        <h3 id="qa-title">问答</h3>
+                        <button onclick="closeQA()" class="btn-close">✖</button>
+                    </div>
+                    <div class="qa-tabs">
+                        <button class="qa-tab active" data-tab="kb" onclick="switchQATab('kb')">📚 知识库</button>
+                        <button class="qa-tab" data-tab="ai" onclick="switchQATab('ai')">🤖 AI问答</button>
+                    </div>
+                    <div class="qa-tab-content" id="qa-tab-kb">
+                        <div class="qa-search">
+                            <input type="text" id="qa-search-input" placeholder="搜索问题..." oninput="searchQA()">
+                        </div>
+                        <div class="qa-list" id="qa-list"></div>
+                    </div>
+                    <div class="qa-tab-content" id="qa-tab-ai" style="display:none;">
+                        <div class="ai-chat" id="ai-chat"></div>
+                        <div class="ai-input-area">
+                            <textarea id="ai-question" placeholder="输入你的问题，AI将为你解答..." rows="2" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();askAI();}"></textarea>
+                            <button onclick="askAI()" class="btn-primary ai-send-btn">发送</button>
+                        </div>
+                        <div class="ai-config" id="ai-config">
+                            <details>
+                                <summary>⚙️ API 设置</summary>
+                                <div class="ai-config-form">
+                                    <label>API Key</label>
+                                    <input type="password" id="ai-api-key" placeholder="sk-..." onchange="saveAIConfig()">
+                                    <div class="ai-provider-btns">
+                                        <button type="button" class="provider-btn" onclick="setAIProvider('deepseek')">🐋 使用 DeepSeek</button>
+                                        <button type="button" class="provider-btn" onclick="setAIProvider('siliconflow')">💎 使用硅基流动(免费)</button>
+                                    </div>
+                                    <label>API 地址</label>
+                                    <input type="text" id="ai-api-url" placeholder="https://api.deepseek.com/v1/chat/completions" onchange="saveAIConfig()">
+                                    <label>模型</label>
+                                    <input type="text" id="ai-model" placeholder="deepseek-chat" onchange="saveAIConfig()">
+                                    <button type="button" class="test-api-btn" onclick="testAIConnection()">🧪 测试连接</button>
+                                    <p class="ai-config-hint">💡 硅基流动注册送免费额度，可选 Qwen/ChatGLM 等免费模型。DeepSeek 需充值。</p>
+                                </div>
+                            </details>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- 手机访问按钮 -->
+<button class="mobile-access-btn" onclick="openMobileAccess()" title="手机扫码访问">
+    <i class="fas fa-qrcode"></i>
+</button>
+
+<!-- 手机访问弹窗 -->
+<div class="modal-overlay" id="mobile-modal" onclick="closeMobileAccess(event)">
+    <div class="mobile-access-card" onclick="event.stopPropagation()">
+        <button class="modal-close-btn" onclick="closeMobileAccess()">&times;</button>
+        <h2>📱 手机访问工作台</h2>
+        <p class="mobile-subtitle">用手机浏览器访问你的个人工作台</p>
+        
+        <div class="qr-section">
+            <div id="qrcode"></div>
+        </div>
+
+        <div class="access-url">
+            <i class="fas fa-link"></i>
+            <span id="mobile-url">http://172.20.10.2:5500</span>
+            <button class="copy-btn" onclick="copyMobileUrl()"><i class="fas fa-copy"></i> 复制</button>
+        </div>
+
+        <div class="mobile-tutorial">
+            <h3><i class="fas fa-book"></i> 使用教程</h3>
+            
+            <div class="tutorial-steps">
+                <div class="tutorial-step">
+                    <div class="step-num">1</div>
+                    <div class="step-content">
+                        <strong>确保电脑和手机在同一WiFi</strong>
+                        <p>手机需要连接到和电脑相同的网络</p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-num">2</div>
+                    <div class="step-content">
+                        <strong>手机浏览器打开地址</strong>
+                        <p>扫描二维码，或在浏览器输入上方链接</p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-num">3</div>
+                    <div class="step-content">
+                        <strong>添加到手机主屏幕</strong>
+                        <p>iPhone: Safari 底部 → <i class="fas fa-share-square"></i> → 添加到主屏幕</p>
+                        <p>Android: Chrome 菜单 → 添加到主屏幕</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutorial-tips">
+                <h4>💡 提示</h4>
+                <ul>
+                    <li>在手机上竖屏使用效果最佳</li>
+                    <li>添加到主屏幕后，使用体验类似 App</li>
+                    <li>数据保存在手机浏览器，不同设备独立存储</li>
+                    <li>如需在外网访问，可使用 ngrok 等内网穿透工具</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
